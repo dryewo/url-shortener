@@ -8,13 +8,17 @@
         result (take n (repeatedly #(rand-nth chars)))]
     (apply str result)))
 
-(def database (atom {}))
+(def database (ref {}))
 
 (s/defn shorten-url :- s/Str
   [url :- s/Str]
-  (let [short (random-string 6)]
-    (swap! database assoc short url)
-    short))
+  (let [result (ref nil)]
+    (dosync
+      (let [short (some #(when-not (contains? @database %) %)
+                        (repeatedly #(random-string 6)))]
+        (ref-set result short)
+        (alter database assoc short url)))
+    @result))
 
 (defn -main
   "I don't do a whole lot ... yet."

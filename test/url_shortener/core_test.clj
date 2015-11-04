@@ -22,8 +22,11 @@
     (is (= "23456789" (random-string 8)))))
 
 (deftest can-shorten-url
-  (with-redefs [database (atom {})
-                random-string (constantly "234567")]
-    (let [short (shorten-url "lalala")]
-      (is (= short "234567"))
-      (is (= @database {"234567" "lalala"})))))
+  (with-redefs [database (ref {})
+                random-string (stateful-mock-fn ["234567" "234567" "765432"])]
+    (let [short1 (shorten-url "lalala")
+          short2 (shorten-url "lalala")]
+      (is (= short1 "234567"))
+      (is (= short2 "765432"))
+      (is (= @database {"234567" "lalala"
+                        "765432" "lalala"})))))
