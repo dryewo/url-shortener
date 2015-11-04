@@ -2,11 +2,13 @@
   (:gen-class)
   (:require [schema.core :as s]))
 
+(def ALPHABET "23456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ")
+
 (defn random-string
   [n]
-  (let [chars "23456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ"
-        result (take n (repeatedly #(rand-nth chars)))]
-    (apply str result)))
+  (->> (repeatedly #(rand-nth ALPHABET))
+       (take n)
+       (apply str)))
 
 (def database (ref {}))
 
@@ -19,6 +21,10 @@
         (ref-set result short)
         (alter database assoc short url)))
     @result))
+
+(s/defn get-url :- (s/maybe s/Str)
+  [short :- s/Str]
+  (get @database short))
 
 (defn -main
   "I don't do a whole lot ... yet."

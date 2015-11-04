@@ -30,3 +30,12 @@
       (is (= short2 "765432"))
       (is (= @database {"234567" "lalala"
                         "765432" "lalala"})))))
+
+(deftest can-get-url
+  (with-redefs [database (ref {"234567" "lalala"})]
+    (is (= "lalala" (get-url "234567")))
+    (is (= nil (get-url "765432"))))
+  (with-redefs [database (ref {})]
+    (let [short (shorten-url "lalala")
+          original-url (get-url short)]
+      (is (= "lalala" original-url)))))
