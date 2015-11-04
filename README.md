@@ -1,36 +1,15 @@
 # url-shortener
 
-FIXME: description
+Exercise in Clojure
 
 ## Installation
 
-Download from http://example.com/FIXME.
+Clone the repo
 
 ## Usage
 
-FIXME: explanation
+Only unit tests are available so far:
 
-    $ java -jar url-shortener-0.1.0-standalone.jar [args]
+    $ lein test
 
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
-
-## License
-
-Copyright © 2015 FIXME
-
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+For collision statistics uncomment the second implementation of `shorten-url`.
